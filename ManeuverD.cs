@@ -14,6 +14,12 @@ namespace ManeuverD
         {
             Log("Starting");
             
+            if (Versioning.version_major >= 1 && Versioning.version_minor >= 8 && Versioning.Revision > 3)
+            {
+                Log("Version of KSP after 1.8.3 are not supported yet");
+                return;
+            }
+
             HarmonyInstance harmony = HarmonyInstance.Create("com.sarbian.ManeuverD");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
@@ -23,7 +29,6 @@ namespace ManeuverD
             Debug.Log("[ManeuverD] " + message);
         }
     }
-
 
     [HarmonyPatch(typeof(PatchedConicSolver))]
     [HarmonyPatch("CheckNextManeuver")]
@@ -59,7 +64,7 @@ namespace ManeuverD
                 {
                     state++;
                     CodeInstruction codeInstruction = new CodeInstruction(OpCodes.Call, SymbolExtensions.GetMethodInfo(() => LookRotation(Vector3d.zero, Vector3d.zero)));
-                    ManeuverD.Log("N state=" + state + " " + codeInstruction.opcode + " \"" + codeInstruction.operand as string + "\"");
+                    //ManeuverD.Log("N state=" + state + " " + codeInstruction.opcode + " \"" + codeInstruction.operand as string + "\"");
                     yield return codeInstruction;
                     continue;
                 }
@@ -77,7 +82,7 @@ namespace ManeuverD
             }
         }
 
-        //private static QuaternionD LookRotation(Vector3d forward, Vector3d up)
+        // Double precision LookRotation.
         public static QuaternionD LookRotation(Vector3d forward, Vector3d up)
         {
             forward = Vector3d.Normalize(forward);
