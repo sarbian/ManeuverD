@@ -14,9 +14,9 @@ namespace ManeuverD
         {
             Log("Starting");
             
-            if (Versioning.version_major >= 1 && Versioning.version_minor >= 8 && Versioning.Revision > 3)
+            if (Versioning.version_major >= 1 && Versioning.version_minor >= 8 && Versioning.Revision > 1)
             {
-                Log("Version of KSP after 1.8.3 are not supported yet");
+                Log("Version of KSP after 1.8.1 are not supported yet");
                 return;
             }
 
